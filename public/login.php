@@ -15,7 +15,8 @@ $error = null;
 if (($_POST['action'] ?? '') === 'login') {
     $res = $auth->login($_POST['correo'] ?? '', $_POST['contrasena'] ?? '');
     if ($res['ok']) {
-        header('Location: catalogo.php');
+        $dest = (currentUserRole()==='AGENTE') ? 'validar.php' : 'catalogo.php';
+        header('Location: ' . $dest);
         exit;
     } else {
         $error = $res['error'];
@@ -25,7 +26,8 @@ if (($_POST['action'] ?? '') === 'login') {
 if (($_POST['action'] ?? '') === 'register') {
     $res = $auth->register($_POST['nombre'] ?? '', $_POST['correo'] ?? '', $_POST['contrasena'] ?? '');
     if ($res['ok']) {
-        header('Location: catalogo.php');
+        $dest = (currentUserRole()==='AGENTE') ? 'validar.php' : 'catalogo.php';
+        header('Location: ' . $dest);
         exit;
     } else {
         $error = $res['error'];
@@ -57,8 +59,8 @@ if (($_POST['action'] ?? '') === 'register') {
       document.getElementById('register').style.display = tab==='register'?'block':'none';
     }
   </script>
-  <?php if (isLoggedIn()): ?>
-    <meta http-equiv="refresh" content="0; url=catalogo.php">
+  <?php if (isLoggedIn()): $dest = (currentUserRole()==='AGENTE') ? 'validar.php' : 'catalogo.php'; ?>
+    <meta http-equiv="refresh" content="0; url=<?= $dest ?>">
   <?php endif; ?>
   </head>
 <body>
