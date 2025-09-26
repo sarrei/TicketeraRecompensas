@@ -10,8 +10,8 @@ function sendMail(string $to, string $subject, string $htmlBody, array $attachme
     try {
         // Config SMTP desde variables de entorno
         $smtpHost = getenv('SMTP_HOST') ?: 'smtp.gmail.com';
-        $smtpUser = getenv('SMTP_USER') ?: 'nowjav@gmail.com';
-        $smtpPass = getenv('SMTP_PASS') ?: 'yfig jemq bjrh bvhj';
+        $smtpUser = getenv('SMTP_USER') ?: '';
+        $smtpPass = getenv('SMTP_PASS') ?: '';
         $smtpPort = getenv('SMTP_PORT') ?: '587';
         $smtpSecure = getenv('SMTP_SECURE') ?: 'tls';
 
