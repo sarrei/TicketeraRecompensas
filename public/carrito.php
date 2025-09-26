@@ -2,10 +2,10 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use App\Controllers\ComprasController;
-use function App\Helpers\requireLogin;
+use function App\Helpers\requireRoles;
 use function App\Helpers\currentUserId;
 
-requireLogin();
+requireRoles(['CLIENTE','ADMIN']);
 
 if (session_status() === PHP_SESSION_NONE) { session_start(); }
 
@@ -56,6 +56,7 @@ $totalPreview = max(0.0, $resumen['subtotal'] - $descuentoPreview);
   </style>
 </head>
 <body>
+  <?php include __DIR__ . '/partials/header.php'; ?>
   <div class="container">
     <h1>Resumen de compra</h1>
     <?php if ($error): ?><div style="color:#b00020;"><?= htmlspecialchars($error) ?></div><?php endif; ?>
@@ -86,6 +87,6 @@ $totalPreview = max(0.0, $resumen['subtotal'] - $descuentoPreview);
       </form>
     </div>
   </div>
+  <?php include __DIR__ . '/partials/footer.php'; ?>
 </body>
 </html>
-

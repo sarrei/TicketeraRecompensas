@@ -43,6 +43,7 @@ $salas = Sala::listAll();
   </style>
 </head>
 <body>
+  <?php include __DIR__ . '/../partials/header.php'; ?>
   <div class="container">
     <h1>Funciones</h1>
     <p><a href="../catalogo.php">Volver al sitio</a> | <a href="peliculas.php">Películas</a> | <a href="cines.php">Cines</a> | <a href="salas.php">Salas</a></p>
@@ -88,6 +89,6 @@ $salas = Sala::listAll();
       <?php endforeach; ?>
     </table>
   </div>
+  <?php include __DIR__ . '/../partials/footer.php'; ?>
 </body>
 </html>
-

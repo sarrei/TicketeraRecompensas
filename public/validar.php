@@ -16,6 +16,8 @@ if ($code || $ticketId) {
     $res = $controller->validar((int)currentUserId(), $code ?: null, $ticketId ?: null);
     if ($res['ok']) {
         $resultado = 'VALIDO';
+        $det = $res['info'] ?? null;
+        $asiento = $res['asiento'] ?? null;
     } else {
         $resultado = 'INVALIDO';
         $error = $res['error'] ?? 'No válido';
@@ -37,6 +39,7 @@ if ($code || $ticketId) {
   </style>
   </head>
 <body>
+  <?php include __DIR__ . '/partials/header.php'; ?>
   <div class="container">
     <h1>Validar Ticket</h1>
     <form method="get" class="card">
@@ -53,7 +56,25 @@ if ($code || $ticketId) {
         <?= $resultado==='VALIDO'?'✅ Ticket válido y marcado como usado':'❌ Ticket inválido' ?>
         <?php if ($error && $resultado==='INVALIDO'): ?><br><small><?= htmlspecialchars($error) ?></small><?php endif; ?>
       </p>
+      <?php if ($resultado==='VALIDO' && $det): ?>
+        <div class="card" style="border:1px solid #ccc; padding:1rem; border-radius:8px;">
+          <p><strong>Película:</strong> <?= htmlspecialchars($det['titulo']) ?></p>
+          <p><strong>Cine/Sala:</strong> <?= htmlspecialchars($det['cine_nombre']) ?> (<?= htmlspecialchars($det['ciudad']) ?>) / <?= htmlspecialchars($det['sala_nombre']) ?></p>
+          <p><strong>Función:</strong> <?= date('d/m/Y H:i', strtotime($det['fecha_funcion'])) ?></p>
+          <?php if (!empty($asiento)): ?>
+            <p><strong>Asiento:</strong> <?= htmlspecialchars($asiento['fila']) ?>-<?= (int)$asiento['numero'] ?></p>
+          <?php endif; ?>
+          <?php
+            $pdo = \App\Config\DB::getConnection();
+            $st = $pdo->prepare('SELECT puntos FROM usuarios WHERE id = ?');
+            $st->execute([(int)$det['usuario_id']]);
+            $pts = (int)($st->fetch()['puntos'] ?? 0);
+          ?>
+          <p><strong>Puntos del cliente:</strong> <?= $pts ?></p>
+        </div>
+      <?php endif; ?>
     <?php endif; ?>
   </div>
+  <?php include __DIR__ . '/partials/footer.php'; ?>
 </body>
 </html>

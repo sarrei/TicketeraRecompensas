@@ -65,3 +65,20 @@ function requireRole(string $role, bool $allowAdmin = true): void
     echo 'Acceso denegado';
     exit;
 }
+
+function requireRoles(array $roles): void
+{
+    requireLogin();
+    $current = currentUserRole();
+    if (in_array($current, $roles, true)) {
+        return;
+    }
+    http_response_code(403);
+    echo 'Acceso denegado';
+    exit;
+}
+
+function isRole(string $role): bool
+{
+    return currentUserRole() === $role;
+}

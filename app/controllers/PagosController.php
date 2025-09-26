@@ -87,9 +87,10 @@ class PagosController
                 $res->execute([$detalleId]);
                 $asientos = $res->fetchAll();
                 foreach ($asientos as $a) {
-                    $code = bin2hex(random_bytes(8)) . '-' . $compraId . '-' . $detalleId;
+                    $asientoId = (int)$a['asiento_id'];
+                    $code = bin2hex(random_bytes(8)) . '-' . $compraId . '-' . $detalleId . '-' . $asientoId;
                     $ticketId = Ticket::crear($detalleId, $code);
-                    $payload = json_encode(['ticket_id' => $ticketId, 'code' => $code], JSON_UNESCAPED_SLASHES);
+                    $payload = json_encode(['ticket_id' => $ticketId, 'code' => $code, 'asiento_id' => $asientoId], JSON_UNESCAPED_SLASHES);
                     $file = generateQR($code, $payload);
                     if ($file) { $ticketFiles[] = $file; }
                 }

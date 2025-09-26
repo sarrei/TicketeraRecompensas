@@ -5,7 +5,9 @@ use App\Controllers\PeliculasController;
 use App\Models\Pelicula;
 use function App\Helpers\requireLogin;
 
-requireLogin();
+use function App\Helpers\requireRoles;
+
+requireRoles(['CLIENTE','ADMIN']);
 
 $ciudad = isset($_GET['ciudad']) ? trim((string)$_GET['ciudad']) : null;
 $cineId = isset($_GET['cine_id']) && $_GET['cine_id'] !== '' ? (int)$_GET['cine_id'] : null;
@@ -37,6 +39,7 @@ $cines = $data['cines'];
   </style>
 </head>
 <body>
+  <?php include __DIR__ . '/partials/header.php'; ?>
   <div class="container">
     <h1>Catálogo</h1>
     <form method="get" class="card" style="margin-bottom:1rem;">
@@ -93,5 +96,6 @@ $cines = $data['cines'];
       <?php endforeach; ?>
     </div>
   </div>
+  <?php include __DIR__ . '/partials/footer.php'; ?>
 </body>
 </html>

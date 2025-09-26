@@ -2,9 +2,9 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use App\Controllers\FuncionesController;
-use function App\Helpers\requireLogin;
+use function App\Helpers\requireRoles;
 
-requireLogin();
+requireRoles(['CLIENTE','ADMIN']);
 
 $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 $controller = new FuncionesController();
@@ -30,6 +30,7 @@ if (!$detalle) {
   </style>
 </head>
 <body>
+  <?php include __DIR__ . '/partials/header.php'; ?>
   <div class="container">
     <h1><?= htmlspecialchars($detalle['titulo']) ?></h1>
     <div class="card">
@@ -51,5 +52,6 @@ if (!$detalle) {
       </div>
     <?php endif; ?>
   </div>
+  <?php include __DIR__ . '/partials/footer.php'; ?>
 </body>
 </html>

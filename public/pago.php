@@ -2,10 +2,10 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use App\Controllers\PagosController;
-use function App\Helpers\requireLogin;
+use function App\\Helpers\\requireRoles;
 use function App\Helpers\currentUserId;
 
-requireLogin();
+requireRoles(['CLIENTE','ADMIN']);
 if (session_status() === PHP_SESSION_NONE) { session_start(); }
 
 $compraId = isset($_GET['compra_id']) ? (int)$_GET['compra_id'] : 0;
@@ -50,6 +50,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
   </style>
 </head>
 <body>
+  <?php include __DIR__ . '/partials/header.php'; ?>
   <div class="container">
     <h1>Pago</h1>
     <?php if ($error): ?><div class="error"><?= htmlspecialchars($error) ?></div><?php endif; ?>
@@ -73,6 +74,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
       </form>
     </div>
   </div>
+  <?php include __DIR__ . '/partials/footer.php'; ?>
   <script>
     function formatExpiry(el){
       let v = el.value.replace(/[^0-9]/g,'').slice(0,4);

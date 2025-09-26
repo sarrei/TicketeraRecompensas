@@ -3,9 +3,9 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 use App\Controllers\AsientosController;
 use App\Models\Asiento;
-use function App\Helpers\requireLogin;
+use function App\Helpers\requireRoles;
 
-requireLogin();
+requireRoles(['CLIENTE','ADMIN']);
 
 if (session_status() === PHP_SESSION_NONE) { session_start(); }
 
@@ -72,6 +72,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
   </style>
 </head>
 <body>
+  <?php include __DIR__ . '/partials/header.php'; ?>
   <div class="container">
     <h1>Selecciona tus asientos</h1>
     <p><?= htmlspecialchars($detalle['titulo']) ?> · <?= htmlspecialchars($detalle['cine_nombre']) ?> · Sala <?= htmlspecialchars($detalle['sala_nombre']) ?> · <?= date('d/m/Y H:i', strtotime($detalle['fecha_funcion'])) ?> · Q<?= number_format((float)$detalle['precio'], 2) ?></p>
@@ -112,5 +113,6 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
     </form>
     <?php endif; ?>
   </div>
+  <?php include __DIR__ . '/partials/footer.php'; ?>
 </body>
 </html>

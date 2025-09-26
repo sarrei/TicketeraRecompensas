@@ -41,6 +41,7 @@ $cines = Cine::listAll();
   </style>
 </head>
 <body>
+  <?php include __DIR__ . '/../partials/header.php'; ?>
   <div class="container">
     <h1>Salas</h1>
     <p><a href="../catalogo.php">Volver al sitio</a> | <a href="peliculas.php">Películas</a> | <a href="cines.php">Cines</a> | <a href="funciones.php">Funciones</a></p>
@@ -78,6 +79,6 @@ $cines = Cine::listAll();
       <?php endforeach; ?>
     </table>
   </div>
+  <?php include __DIR__ . '/../partials/footer.php'; ?>
 </body>
 </html>
-

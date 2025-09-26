@@ -1,12 +1,12 @@
 <?php
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use function App\Helpers\requireLogin;
+use function App\Helpers\requireRoles;
 use function App\Helpers\currentUserId;
 use App\Models\Ticket;
 use App\Config\DB;
 
-requireLogin();
+requireRoles(['CLIENTE','ADMIN']);
 
 $compraId = isset($_GET['compra_id']) ? (int)$_GET['compra_id'] : 0;
 if (!$compraId) {
@@ -43,6 +43,7 @@ $tickets = Ticket::obtenerPorCompra($compraId);
   </style>
 </head>
 <body>
+  <?php include __DIR__ . '/partials/header.php'; ?>
   <div class="container">
     <h1>Compra exitosa</h1>
     <p>Tu pago fue aprobado. Hemos enviado a tu correo los tickets con sus QR.</p>
@@ -65,5 +66,6 @@ $tickets = Ticket::obtenerPorCompra($compraId);
       <div style="margin-top:1rem;"><a href="catalogo.php">Volver al catálogo</a></div>
     </div>
   </div>
+  <?php include __DIR__ . '/partials/footer.php'; ?>
 </body>
 </html>
