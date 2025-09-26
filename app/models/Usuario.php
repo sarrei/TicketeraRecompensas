@@ -84,5 +84,32 @@ class Usuario
         }
         return (int)$row['id'];
     }
-}
 
+    public static function ajustarPuntos(int $usuarioId, int $delta): void
+    {
+        $pdo = DB::getConnection();
+        $stmt = $pdo->prepare("UPDATE usuarios SET puntos = GREATEST(0, puntos + ?) WHERE id = ?");
+        $stmt->execute([$delta, $usuarioId]);
+        self::recalcularNivel($usuarioId);
+    }
+
+    public static function recalcularNivel(int $usuarioId): void
+    {
+        $pdo = DB::getConnection();
+        $stmt = $pdo->prepare("SELECT puntos FROM usuarios WHERE id = ?");
+        $stmt->execute([$usuarioId]);
+        $puntos = (int)($stmt->fetch()['puntos'] ?? 0);
+
+        $niveles = $pdo->query("SELECT id, min_puntos FROM niveles_fidelizacion ORDER BY min_puntos ASC")->fetchAll();
+        $nivelId = $niveles[0]['id'] ?? null;
+        foreach ($niveles as $n) {
+            if ($puntos >= (int)$n['min_puntos']) {
+                $nivelId = (int)$n['id'];
+            }
+        }
+        if ($nivelId) {
+            $up = $pdo->prepare("UPDATE usuarios SET nivel_id = ? WHERE id = ?");
+            $up->execute([$nivelId, $usuarioId]);
+        }
+    }
+}

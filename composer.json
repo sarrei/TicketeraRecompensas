@@ -3,7 +3,9 @@
   "description": "MVP Ticketera con Recompensas",
   "type": "project",
   "require": {
-    "php": ">=8.0"
+    "php": ">=8.0",
+    "phpmailer/phpmailer": "^6.9",
+    "chillerlan/php-qrcode": "^4.3"
   },
   "autoload": {
     "psr-4": {
