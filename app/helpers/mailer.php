@@ -9,9 +9,9 @@ function sendMail(string $to, string $subject, string $htmlBody, array $attachme
     $mail = new PHPMailer(true);
     try {
         // Config SMTP desde variables de entorno
-        $smtpHost = getenv('SMTP_HOST') ?: '';
-        $smtpUser = getenv('SMTP_USER') ?: '';
-        $smtpPass = getenv('SMTP_PASS') ?: '';
+        $smtpHost = getenv('SMTP_HOST') ?: 'smtp.gmail.com';
+        $smtpUser = getenv('SMTP_USER') ?: 'nowjav@gmail.com';
+        $smtpPass = getenv('SMTP_PASS') ?: 'yfig jemq bjrh bvhj';
         $smtpPort = getenv('SMTP_PORT') ?: '587';
         $smtpSecure = getenv('SMTP_SECURE') ?: 'tls';
 
