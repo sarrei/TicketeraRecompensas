@@ -5,6 +5,30 @@ use App\Config\DB;
 
 class Ticket
 {
+    public static function findById(int $id): ?array
+    {
+        $pdo = DB::getConnection();
+        $stmt = $pdo->prepare("SELECT * FROM tickets WHERE id = ?");
+        $stmt->execute([$id]);
+        $row = $stmt->fetch();
+        return $row ?: null;
+    }
+
+    public static function findByCode(string $code): ?array
+    {
+        $pdo = DB::getConnection();
+        $stmt = $pdo->prepare("SELECT * FROM tickets WHERE codigo_qr = ?");
+        $stmt->execute([$code]);
+        $row = $stmt->fetch();
+        return $row ?: null;
+    }
+
+    public static function marcarValidado(int $ticketId, int $usuarioId): void
+    {
+        $pdo = DB::getConnection();
+        $stmt = $pdo->prepare("UPDATE tickets SET validado = 1, validado_por = ?, validado_en = NOW() WHERE id = ?");
+        $stmt->execute([$usuarioId, $ticketId]);
+    }
     public static function crear(int $compraDetalleId, string $codigo): int
     {
         $pdo = DB::getConnection();

@@ -13,6 +13,37 @@ class Pelicula
         return $stmt->fetchAll() ?: [];
     }
 
+    public static function find(int $id): ?array
+    {
+        $pdo = DB::getConnection();
+        $st = $pdo->prepare("SELECT * FROM peliculas WHERE id = ?");
+        $st->execute([$id]);
+        $r = $st->fetch();
+        return $r ?: null;
+    }
+
+    public static function create(string $titulo, ?string $descripcion, ?int $duracion, ?string $clasificacion): int
+    {
+        $pdo = DB::getConnection();
+        $st = $pdo->prepare("INSERT INTO peliculas (titulo, descripcion, duracion, clasificacion) VALUES (?,?,?,?)");
+        $st->execute([$titulo, $descripcion, $duracion, $clasificacion]);
+        return (int)$pdo->lastInsertId();
+    }
+
+    public static function update(int $id, string $titulo, ?string $descripcion, ?int $duracion, ?string $clasificacion): void
+    {
+        $pdo = DB::getConnection();
+        $st = $pdo->prepare("UPDATE peliculas SET titulo=?, descripcion=?, duracion=?, clasificacion=? WHERE id = ?");
+        $st->execute([$titulo, $descripcion, $duracion, $clasificacion, $id]);
+    }
+
+    public static function delete(int $id): void
+    {
+        $pdo = DB::getConnection();
+        $st = $pdo->prepare("DELETE FROM peliculas WHERE id = ?");
+        $st->execute([$id]);
+    }
+
     public static function getCiudades(): array
     {
         $pdo = DB::getConnection();

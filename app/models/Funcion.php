@@ -6,6 +6,39 @@ use PDO;
 
 class Funcion
 {
+    public static function listAll(): array
+    {
+        $pdo = DB::getConnection();
+        $sql = "SELECT f.*, p.titulo, s.nombre AS sala_nombre, c.nombre AS cine_nombre, c.ciudad
+                FROM funciones f
+                JOIN peliculas p ON p.id = f.pelicula_id
+                JOIN salas s ON s.id = f.sala_id
+                JOIN cines c ON c.id = s.cine_id
+                ORDER BY f.fecha_funcion DESC";
+        return $pdo->query($sql)->fetchAll() ?: [];
+    }
+
+    public static function create(int $peliculaId, int $salaId, string $fechaFuncion, float $precio): int
+    {
+        $pdo = DB::getConnection();
+        $st = $pdo->prepare("INSERT INTO funciones (pelicula_id, sala_id, fecha_funcion, precio) VALUES (?,?,?,?)");
+        $st->execute([$peliculaId, $salaId, $fechaFuncion, $precio]);
+        return (int)$pdo->lastInsertId();
+    }
+
+    public static function update(int $id, int $peliculaId, int $salaId, string $fechaFuncion, float $precio): void
+    {
+        $pdo = DB::getConnection();
+        $st = $pdo->prepare("UPDATE funciones SET pelicula_id=?, sala_id=?, fecha_funcion=?, precio=? WHERE id = ?");
+        $st->execute([$peliculaId, $salaId, $fechaFuncion, $precio, $id]);
+    }
+
+    public static function delete(int $id): void
+    {
+        $pdo = DB::getConnection();
+        $st = $pdo->prepare("DELETE FROM funciones WHERE id = ?");
+        $st->execute([$id]);
+    }
     public static function findDetail(int $id): ?array
     {
         $pdo = DB::getConnection();

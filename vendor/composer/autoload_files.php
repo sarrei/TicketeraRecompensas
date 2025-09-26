@@ -7,4 +7,6 @@ $baseDir = dirname($vendorDir);
 
 return array(
     '41749af4645462aa55d875b07a099fc2' => $baseDir . '/app/helpers/auth.php',
+    '8e09653ae9bc5e5d02c258aecf94e172' => $baseDir . '/app/helpers/qr.php',
+    '011a78ff8089f20254410d5ef75d5881' => $baseDir . '/app/helpers/mailer.php',
 );

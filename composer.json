@@ -12,7 +12,9 @@
       "App\\": "app/"
     },
     "files": [
-      "app/helpers/auth.php"
+      "app/helpers/auth.php",
+      "app/helpers/qr.php",
+      "app/helpers/mailer.php"
     ]
   }
 }
