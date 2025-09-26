@@ -41,4 +41,33 @@ class Asiento
         $stmt->execute($params);
         return array_map('intval', array_column($stmt->fetchAll() ?: [], 'asiento_id'));
     }
+
+    public static function deleteBySala(int $salaId): void
+    {
+        $pdo = DB::getConnection();
+        $stmt = $pdo->prepare("DELETE FROM asientos WHERE sala_id = ?");
+        $stmt->execute([$salaId]);
+    }
+
+    public static function generateGrid(int $salaId, int $filas, int $cols, int $startAscii = 65): void
+    {
+        $filas = max(1, min(26, $filas));
+        $cols = max(1, min(50, $cols));
+        $pdo = DB::getConnection();
+        $stmt = $pdo->prepare("INSERT INTO asientos (sala_id, fila, numero) VALUES (?,?,?)");
+        for ($i = 0; $i < $filas; $i++) {
+            $fila = chr($startAscii + $i);
+            for ($n = 1; $n <= $cols; $n++) {
+                $stmt->execute([$salaId, $fila, $n]);
+            }
+        }
+    }
+
+    public static function countBySala(int $salaId): int
+    {
+        $pdo = DB::getConnection();
+        $st = $pdo->prepare("SELECT COUNT(*) AS c FROM asientos WHERE sala_id = ?");
+        $st->execute([$salaId]);
+        return (int)($st->fetch()['c'] ?? 0);
+    }
 }
