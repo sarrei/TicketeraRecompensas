@@ -2,7 +2,7 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use App\Controllers\PagosController;
-use function App\\Helpers\\requireRoles;
+use function App\Helpers\requireRoles;
 use function App\Helpers\currentUserId;
 
 requireRoles(['CLIENTE','ADMIN']);
